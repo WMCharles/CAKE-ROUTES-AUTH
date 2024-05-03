@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Routes configuration.
  *
@@ -29,6 +30,7 @@ use Cake\Routing\RouteBuilder;
   * So you can use  `$this` to reference the application class instance
   * if required.
  */
+
 return function (RouteBuilder $routes): void {
     /*
      * The default class to use for all routes
@@ -75,7 +77,26 @@ return function (RouteBuilder $routes): void {
          * You can remove these routes once you've connected the
          * routes you want in your application.
          */
+
+
+
         $builder->fallbacks();
+    });
+
+    $routes->prefix('Manager', function (RouteBuilder $routes) {
+        $routes->prefix('Admin', function (RouteBuilder $routes) {
+            $routes->connect('/{controller}/{action}');
+            $routes->connect('/', ['controller' => 'Users', 'action' => 'login', 'home']);
+        });
+    });
+
+    $routes->prefix('Api', function (RouteBuilder $routes) {
+        $routes->prefix('V1', function (RouteBuilder $routes) {
+            $routes->prefix('Admin', function (RouteBuilder $routes) { // Add this line
+                $routes->connect('/{controller}/{action}');
+                $routes->connect('/', ['controller' => 'Users', 'action' => 'login', 'home']);
+            }); // Add this line
+        });
     });
 
     /*
