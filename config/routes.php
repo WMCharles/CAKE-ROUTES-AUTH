@@ -93,8 +93,12 @@ return function (RouteBuilder $routes): void {
 
     $routes->prefix('Api', function (RouteBuilder $routes) {
         $routes->prefix('V1', function (RouteBuilder $routes) {
-            $routes->prefix('Admin', function (RouteBuilder $routes) { // Add this line
+            $routes->prefix('Admin', function (RouteBuilder $routes) {
                 $routes->connect('/', ['controller' => 'Users', 'action' => 'login', 'home']);
+                $routes->fallbacks();
+            });
+            $routes->prefix('Client', function (RouteBuilder $routes) {
+                $routes->connect('/', ['controller' => 'Clients', 'action' => 'index']);
                 $routes->fallbacks();
             });
         });

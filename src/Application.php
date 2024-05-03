@@ -115,48 +115,13 @@ class Application extends BaseApplication implements AuthenticationServiceProvid
         return $middlewareQueue;
     }
 
-    // authentication
-    // public function getAuthenticationService(ServerRequestInterface $request): AuthenticationServiceInterface
-    // {
-    //     if ($request->getParam('prefix') == 'Api/V1/Admin') {
-    //         $authenticationService = new AuthenticationService([
-    //             'unauthenticatedRedirect' => Router::url('api/v1/admin/users/login'),
-    //             'queryParam' => 'redirect',
-    //         ]);
-
-    //         // Load identifiers, ensure we check email and password fields
-    //         $authenticationService->loadIdentifier('Authentication.Password', [
-    //             'fields' => [
-    //                 'username' => 'email',
-    //                 'password' => 'password',
-    //             ],
-    //             // 'resolver' => [
-    //             //     'className' => 'Authentication.Orm',
-    //             //     'userModel' => 'Users',
-    //             // ],
-    //         ]);
-
-    //         // Load the authenticators, you want session first
-    //         $authenticationService->loadAuthenticator('Authentication.Session');
-    //         // Configure form data check to pick email and password
-    //         $authenticationService->loadAuthenticator('Authentication.Form', [
-    //             'fields' => [
-    //                 'username' => 'email',
-    //                 'password' => 'password',
-    //             ],
-    //             'loginUrl' => Router::url('api/v1/admin/users/login'),
-    //         ]);
-    //     }
-    //     return $authenticationService;
-    // }
-
     public function getAuthenticationService(ServerRequestInterface $request): AuthenticationServiceInterface
     {
         $authenticationService = new AuthenticationService([
             'unauthenticatedRedirect' => Router::url('/login'),
             'queryParam' => 'redirect',
         ]);
-    
+
         if ($request->getParam('prefix') === 'Api/V1/Admin') {
             $authenticationService->setConfig([
                 'unauthenticatedRedirect' => Router::url('api/v1/admin/users/login'),
@@ -177,7 +142,32 @@ class Application extends BaseApplication implements AuthenticationServiceProvid
                 'loginUrl' => Router::url('api/v1/admin/users/login'),
             ]);
         }
-    
+
+        if ($request->getParam('prefix') === 'Api/V1/Client') {
+            $authenticationService->setConfig([
+                'unauthenticatedRedirect' => Router::url('api/v1/client/clients/login'),
+                'queryParam' => 'redirect',
+            ]);
+            $authenticationService->loadIdentifier('Authentication.Password', [
+                'fields' => [
+                    'username' => 'email',
+                    'password' => 'password',
+                ],
+            ]);
+            $authenticationService->loadAuthenticator('Authentication.Session');
+            $authenticationService->loadAuthenticator('Authentication.Form', [
+                'fields' => [
+                    'username' => 'email',
+                    'password' => 'password',
+                ],
+                'resolver' => [
+                    'className' => 'Authentication.Orm',
+                    'userModel' => 'Clients',
+                ],
+                'loginUrl' => Router::url('api/v1/client/clients/login'),
+            ]);
+        }
+
         return $authenticationService;
     }
 

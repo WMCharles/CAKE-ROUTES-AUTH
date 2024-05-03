@@ -24,8 +24,8 @@ class ClientsFixture extends TestFixture
                 'email' => 'Lorem ipsum dolor sit amet',
                 'phone_number' => 'Lorem ipsum dolor sit amet',
                 'password' => 'Lorem ipsum dolor sit amet',
-                'created' => '2024-05-03 19:37:38',
-                'modified' => '2024-05-03 19:37:38',
+                'created' => '2024-05-03 22:12:43',
+                'modified' => '2024-05-03 22:12:43',
             ],
         ];
         parent::init();
