@@ -85,17 +85,18 @@ return function (RouteBuilder $routes): void {
 
     $routes->prefix('Manager', function (RouteBuilder $routes) {
         $routes->prefix('Admin', function (RouteBuilder $routes) {
-            $routes->connect('/{controller}/{action}');
+            $routes->connect('/Users');
             $routes->connect('/', ['controller' => 'Users', 'action' => 'login', 'home']);
+            $routes->fallbacks();
         });
     });
 
     $routes->prefix('Api', function (RouteBuilder $routes) {
         $routes->prefix('V1', function (RouteBuilder $routes) {
             $routes->prefix('Admin', function (RouteBuilder $routes) { // Add this line
-                $routes->connect('/{controller}/{action}');
                 $routes->connect('/', ['controller' => 'Users', 'action' => 'login', 'home']);
-            }); // Add this line
+                $routes->fallbacks();
+            });
         });
     });
 
